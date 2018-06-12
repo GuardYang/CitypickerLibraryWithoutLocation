@@ -31,7 +31,6 @@ import java.util.List;
 @Route(path = "/lib/CityPickerActivity")
 public class CityPickerActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String KEY_PICKED_CITY = "picked_city";
-    private final int SDK_PERMISSION_STORAGE_REQUEST = 128;
     private ListView mListView;
     private ListView mResultListView;
     private SideLetterBar mLetterBar;
@@ -50,18 +49,12 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cp_activity_city_list);
-        getPersimmions();
+
         initData();
         initView();
-        initLocation();
     }
 
-    private void initLocation() {
 
-
-
-
-    }
 
     private void initData() {
         dbManager = new DBManager(this);
@@ -160,41 +153,4 @@ public class CityPickerActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
-
-    private void getPersimmions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            ArrayList<String> permissions = new ArrayList<String>();
-            /***
-             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
-             */
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-            if (permissions.size() > 0) {
-                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_STORAGE_REQUEST);
-            }
-
-        }
-    }
-
-    @TargetApi(23)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // TODO Auto-generated method stub
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == SDK_PERMISSION_STORAGE_REQUEST) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-            }
-        }
-
-    }
 }
